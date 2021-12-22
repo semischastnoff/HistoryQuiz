@@ -29,6 +29,8 @@ class QuestionsModel: ObservableObject {
     
     @Published var insideQuizView: Bool = false
     
+    @Published var currentTheme: QuestionsThemes = .peterTheFirst
+    
     var timer: Timer!
     
     func startTimer() {
@@ -96,6 +98,7 @@ class QuestionsModel: ObservableObject {
     ]
     
     func changeTheme(newTheme: QuestionsThemes) {
+        self.currentTheme = newTheme
         self.data = self.themesToQuestionsDict[newTheme] ?? []
     }
 }

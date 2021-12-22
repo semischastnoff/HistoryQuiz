@@ -17,10 +17,12 @@ struct TabBar: View {
             self.mainCard
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             
+            self.currentTheme
+            
             HStack {
                 ForEach(Tab.allCases, id: \.self) {item in
                     Button (action: {
-                        withAnimation(.spring()) {
+                        withAnimation(.easeOut(duration: 0.5)) {
                             self.selectedTab = item
                             if (item == .quiz) {
                                 self.questionsModel.insideQuizView = true
@@ -97,6 +99,24 @@ struct TabBar: View {
             }
         }
     }
+    
+    var currentTheme: some View {
+        Group {
+            if (self.selectedTab == .questions) {
+                VStack {
+                    Text("Текущая тема:")
+                    Text(self.questionsModel.currentTheme.rawValue)
+                }
+                .font(.title3)
+                .foregroundColor(.primary)
+                .padding()
+                .padding(.horizontal)
+                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
+                .shadow(color: .primary.opacity(0.2), radius: 10, x: 0, y: 10)
+                .offset(y: -620)
+            }
+        }
+    }
 }
 
 enum Tab: String, CaseIterable {
@@ -109,6 +129,6 @@ enum Tab: String, CaseIterable {
 
 struct TabBar_Previews: PreviewProvider {
     static var previews: some View {
-        TabBar()
+        ContentView()
     }
 }

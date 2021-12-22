@@ -35,6 +35,8 @@ struct QuestionCard: View {
     
     func animate(id: ButtonID) {
         self.isClicked[id]?.toggle()
+        self.showAnswer = false
+        self.currentColor = .yellow
         for currentID in ButtonID.allCases {
             if (id != currentID && self.isClicked[currentID] ?? false) {
                 self.isClicked[currentID]? = false
@@ -58,22 +60,21 @@ struct QuestionCard: View {
             ZStack {
                 VStack(alignment: .leading, spacing: 20) {
                     Text(self.question)
-//                        .font(.title)
                         .fontWeight(.bold)
                         .foregroundStyle(.linearGradient(colors: [.purple, .primary], startPoint: .topLeading, endPoint: .bottomTrailing))
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                        .rotation3DEffect(self.questionsModel.insideQuizView && self.showAnswer ? .degrees(180) : .degrees(0), axis: (x: 0, y: 1, z: 0))
+//                        .rotation3DEffect(self.showAnswer ? .degrees(180) : .degrees(0), axis: (x: 0, y: 1, z: 0))
                         .fixedSize(horizontal: false, vertical: true)
                         .scaledToFit()
                         .padding(.top, 20)
                     
                     self.buttons
-                        .rotation3DEffect(self.questionsModel.insideQuizView && self.showAnswer ? .degrees(180) : .degrees(0), axis: (x: 0, y: 1, z: 0))
+//                        .rotation3DEffect(self.showAnswer ? .degrees(180) : .degrees(0), axis: (x: 0, y: 1, z: 0))
                 }
                 .padding(40)
                 .frame(width: gp.size.width - 40, height: gp.size.width - 40)
                 .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
-                .rotation3DEffect(self.questionsModel.insideQuizView && self.showAnswer ? .degrees(180) : .degrees(0), axis: (x: 0, y: 1, z: 0))
+//                .rotation3DEffect(self.showAnswer ? .degrees(180) : .degrees(0), axis: (x: 0, y: 1, z: 0))
                 .shadow(color: .primary.opacity(0.2), radius: 10, x: 0, y: 10)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 .animation(.spring(), value: 180)
@@ -87,7 +88,7 @@ struct QuestionCard: View {
     
     var checkButton: some View {
         Button {
-            withAnimation(.default) {
+            withAnimation(.easeIn) {
                 self.checkAnswer()
                 if (self.questionsModel.insideQuizView) {
                     self.questionsModel.startTimer()
@@ -184,6 +185,6 @@ struct QuestionCard: View {
 
 struct QuestionCard_Previews: PreviewProvider {
     static var previews: some View {
-        QuestionCard(question: "В каком году основан Санкт-Петербург?", variousAnswers: ["1", "2", "3", "4"], correctAnswerIndex: 0)
+        ContentView()
     }
 }
